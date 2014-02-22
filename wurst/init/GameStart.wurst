@@ -1,8 +1,11 @@
 package GameStart
 import PlayerData
 import TileInit
+import ReviveCircle
+import Entity
 
 public function startGame()
+	startEntityLoop()
 	
 
 function initGame()
@@ -10,6 +13,9 @@ function initGame()
 	print("init PlayerData...")
 	initPlayerData()
 	print("init PlayerData...done!")
+	print("init Revive.......")
+	initReviveCircles()
+	print("init Revive.......done!")
 	
 	// Last init, then maze genration
 	print("init Tiles........")

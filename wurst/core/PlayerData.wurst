@@ -1,16 +1,23 @@
 package PlayerData
+import Escaper
+import ReviveCircle
 
-PlayerData array pData
-int playercount = 0
+public PlayerData array pData
+public int playercount = 0
 
 public class PlayerData
-	player 	p
-	int 	id
+	player 			p
+	int 			id
+	Escaper 		escaper 	= null
+	ReviveCircle	revCircle 	= null
 	
 	construct(player p)
 		this.p = p
 		id = p.getId()
 		pData[id] = this
+		
+	function activateRevive()
+		revCircle.activateAt(escaper.pos)
 		
 	
 public function initPlayerData()
