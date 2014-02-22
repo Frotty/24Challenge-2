@@ -9,7 +9,6 @@ import CreepInit
 
 public function startGame()
 	startEntityLoop()
-	initCreeps()
 	new Escaper(vec2(-3200,-6500), Player(0))
 
 function initGame()

@@ -25,7 +25,14 @@ public class Area
 		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
 		
 	function addSmallCreep(vec2 offset)
-		entities.add(new SmallCreep(zero+offset, getRandomTargetPos(zero+offset)))
+		let offset2 = getRandomTargetPos(zero+offset)
+		if offset2.lengthSquared() > 10
+			entities.add(new SmallCreep(zero+offset, offset2))
+			
+	function addBigCreep(vec2 offset)
+		let offset2 = getRandomTargetPos(zero+offset)
+		if offset2.lengthSquared() > 10
+			entities.add(new BigCreep(zero+offset, offset2))
 	
 		
 public function getAreaFromPoint(vec2 pos) returns Area

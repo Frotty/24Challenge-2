@@ -27,7 +27,7 @@ public function generateMaze()
 		if current.ipos.y == HEIGHT-2
 			destroy cb
 			print(">>>>>>>>>>destroyed")
-			expt.start(0.01, function initCreeps)
+			expt.start(0.01, function initSmallCreeps)
 	end)
 	
 //	for int i = 1 to 50

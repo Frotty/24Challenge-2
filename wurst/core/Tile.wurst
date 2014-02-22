@@ -32,6 +32,7 @@ public class Tile
 	
 	function changeTType(int ttype)
 		SetTerrainType(pos.x, pos.y, ttype, -1, 1, 0)
+		ttypeId = ttype
 		
 	function getRandomWalkableNeighbour() returns Tile
 		LinkedList<Tile> tiles = new LinkedList<Tile>()
@@ -39,6 +40,7 @@ public class Tile
 		for i = -10 to 10
 			for j = -10 to 10
 				let t = area.tileTable.loadInt(ipos.x+i, ipos.y+j) castTo Tile
+				print((t castTo int).toString() + " " + t.ttypeId.toString())
 				if t != null and t.ttypeId == WALKABLE_ID
 					tiles.add(t)
 		if tiles.getSize() < 1

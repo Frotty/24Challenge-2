@@ -7,10 +7,10 @@ public function getRandomTargetPos(vec2 pos) returns vec2
 	let t = Tile.getFromPos(pos)
 	let tn = t.getRandomWalkableNeighbour()
 	if tn == null
-		return t.pos.polarOffset(angle(GetRandomReal(0,360)), GetRandomReal(1050, 4500))
+		return vec2(0,0)
 	let ang = t.pos.angleTo(tn.pos)
 	let dist = t.pos.distToVec(tn.pos)
-	return t.pos.polarOffset(ang, dist + GetRandomReal(50, 2500))
+	return t.pos.polarOffset(ang, dist + GetRandomReal(50, dist))
 
 class Creep extends Entity
 	
