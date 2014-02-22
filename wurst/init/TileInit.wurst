@@ -4,24 +4,23 @@ import GameConstants
 import GameStart
 import Area
 
-constant HEIGHT = 44
-constant WIDTH	= 47
+
 
 var row = 0
 
 function initRow()
 	let expt = GetExpiredTimer()
 	for i = 0 to WIDTH-1
-		new Tile(AREA_LEFT_BOT, row, i)
+		new Tile(AREA_LEFT_BOT, i, row)
 
 	for i = 0 to WIDTH-1
-		new Tile(AREA_LEFT_TOP, row, i)
+		new Tile(AREA_LEFT_TOP, i, row)
 		
 	for i = 0 to WIDTH-1
-		new Tile(AREA_RIGHT_BOT, row, i)
+		new Tile(AREA_RIGHT_BOT, i, row)
 		
 	for i = 0 to WIDTH-1
-		new Tile(AREA_RIGHT_TOP, row, i)
+		new Tile(AREA_RIGHT_TOP, i, row)
 
 	row++
 	if row > HEIGHT-1

@@ -1,5 +1,6 @@
 package Area
 import Tile
+import GameConstants
 
 public class Area
 	hashtable tileTable = InitHashtable()
@@ -12,6 +13,9 @@ public class Area
 		
 	function getTile(int x, int y) returns Tile
 		return tileTable.loadInt(x, y) castTo Tile
+		
+	function getRandomBottomTile() returns Tile
+		return getTile(GetRandomInt(4, WIDTH-5),0)
 		
 	function isPointInArea(vec2 pos) returns boolean
 		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
