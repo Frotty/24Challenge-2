@@ -28,12 +28,12 @@ public class Escaper extends Entity
 	override function onUpdate()
 		if alive
 			pos = actor.getPos()
-		currentTile = Tile.getFromPos(pos)		
+		currentTile = Tile.getFromPos(pos)	
 		pos += vel
 		actor.setXY(pos)
 		vel *= .92
 		vel.trim(1.)
-		if currentTile.ttypeId == UNWALKABLE_ID
+		if currentTile != null and currentTile.ttypeId == UNWALKABLE_ID
 			actor.kill()
 		
 	override function onInRange()
