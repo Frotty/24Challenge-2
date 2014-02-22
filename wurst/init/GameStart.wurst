@@ -5,12 +5,15 @@ import ReviveCircle
 import Entity
 import Escaper
 import Area
+import CreepInit
 
 public function startGame()
 	startEntityLoop()
+	initCreeps()
 	new Escaper(vec2(-3200,-6500), Player(0))
 
 function initGame()
+	let t = GetExpiredTimer()
 	print("init started......")
 	print("init PlayerData...")
 	initPlayerData()
@@ -23,7 +26,7 @@ function initGame()
 	print("init Areas........done!")
 	// Last init, then maze genration
 	print("init Tiles........")
-	initTiles()
+	t.start(0.01, function initTiles)
 	print("init Tiles........done!")
 	
 

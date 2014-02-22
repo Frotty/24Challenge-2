@@ -1,0 +1,14 @@
+package CreepInit
+import Area
+import GameConstants
+
+int iterator = 0
+
+public function initCreeps()
+	AREA_LEFT_BOT.addSmallCreep(vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128))
+	
+	iterator++
+	if iterator > 30
+		return
+	else
+		

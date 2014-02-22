@@ -1,0 +1,48 @@
+package Creep
+import Entity
+import Escaper
+import Tile
+
+public function getRandomTargetPos(vec2 pos) returns vec2
+	let t = Tile.getFromPos(pos)
+	let tn = t.getRandomWalkableNeighbour()
+	let ang = t.pos.angleTo(tn.pos)
+	let dist = t.pos.distToVec(tn.pos)
+	
+	return t.pos.polarOffset(ang, dist + GetRandomReal(50, 2500))
+
+class Creep extends Entity
+	
+	construct(vec2 pos, vec2 target, int id, real radius)
+		super(pos, DUMMY_PLAYER, id, radius)
+		actor.issuePointOrder("patrol", target)
+		
+	override function onDeath()
+		error("killer died ?!")
+		
+	override function onUpdate()
+		
+		
+	override function onInRange()
+		let data = GetTriggerUnit().getClass()
+		if data instanceof Escaper
+			data.actor.kill()
+			
+constant SM_ID 		= 'usmc'
+constant SM_RADIUS 	= 64.
+			
+public class SmallCreep extends Creep
+	
+	construct(vec2 pos, vec2 target)
+		super(pos, target, SM_ID, SM_RADIUS)
+		
+	
+constant BG_ID 		= 'ucbg'
+constant BG_RADIUS 	= 128.
+			
+public class BigCreep extends Creep
+	
+	construct(vec2 pos, vec2 target)
+		super(pos, target, BG_ID, BG_RADIUS)
+		
+	

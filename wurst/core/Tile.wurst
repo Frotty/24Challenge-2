@@ -1,6 +1,7 @@
 package Tile
 import GameConstants
 import Area
+import LinkedList
 
 public tuple key(int x, int y)
 
@@ -27,10 +28,26 @@ public class Tile
 		let area = getAreaFromPoint(pos)
 		return area.tileTable.loadInt((pos.x-area.zero.x).toInt() div 128, (pos.y-area.zero.y).toInt() div 128) castTo Tile
 		
-		
+	
+	
 	function changeTType(int ttype)
 		SetTerrainType(pos.x, pos.y, ttype, -1, 1, 0)
 		
+	function getRandomWalkableNeighbour() returns Tile
+		LinkedList<Tile> tiles = new LinkedList<Tile>()
+		Tile val = null
+		for i = -10 to 10
+			for j = -10 to 10
+				let t = area.tileTable.loadInt(ipos.x+i, ipos.y+j) castTo Tile
+				if t != null and t.ttypeId == WALKABLE_ID
+					tiles.add(t)
+		if tiles.getSize() < 1
+			error("no nearby tile walkable")
+		else
+			val = tiles.get(GetRandomInt(0, tiles.getSize()-1))
+		destroy tiles
+		return val
+	
 	function getNeighbour(Side side) returns Tile
 		switch side
 			case TOP

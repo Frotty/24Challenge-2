@@ -1,9 +1,13 @@
 package Area
 import Tile
 import GameConstants
+import LinkedList
+import Entity
+import Creep
 
 public class Area
 	hashtable tileTable = InitHashtable()
+	LinkedList<Entity> entities = new LinkedList<Entity>()
 	vec2 zero
 	vec2 max
 	
@@ -19,6 +23,9 @@ public class Area
 		
 	function isPointInArea(vec2 pos) returns boolean
 		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
+		
+	function addSmallCreep(vec2 offset)
+		entities.add(new SmallCreep(zero+offset, getRandomTargetPos(zero+offset)))
 	
 		
 public function getAreaFromPoint(vec2 pos) returns Area

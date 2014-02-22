@@ -8,7 +8,7 @@ import Area
 
 var row = 0
 
-function initRow()
+public function initTiles()
 	let expt = GetExpiredTimer()
 	for i = 0 to WIDTH-1
 		new Tile(AREA_LEFT_BOT, i, row)
@@ -27,9 +27,6 @@ function initRow()
 		expt.release()
 		startGame()
 	else
-		expt.start(0.01, function initRow)
-
-public function initTiles()
-	getTimer().start(0.01, function initRow)
+		expt.start(0.01, function initTiles)
 			
 		
