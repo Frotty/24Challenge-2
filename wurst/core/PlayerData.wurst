@@ -1,6 +1,7 @@
 package PlayerData
 
 PlayerData array pData
+int playercount = 0
 
 public class PlayerData
 	player 	p
@@ -17,3 +18,4 @@ public function initPlayerData()
 		var p = Player(i)
 		if GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING
 			new PlayerData(p)
+			playercount++

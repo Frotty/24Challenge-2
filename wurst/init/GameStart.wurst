@@ -1,8 +1,21 @@
 package GameStart
+import PlayerData
+import TileInit
 
-function startGame()
+public function startGame()
+	
 
 function initGame()
+	print("init started......")
+	print("init PlayerData...")
+	initPlayerData()
+	print("init PlayerData...done!")
+	
+	// Last init, then maze genration
+	print("init Tiles........")
+	initTiles()
+	print("init Tiles........done!")
+	
 
 init
 	let t = getTimer()

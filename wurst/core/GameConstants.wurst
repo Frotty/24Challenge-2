@@ -1,0 +1,4 @@
+package GameConstants
+
+public constant UNWALKABLE_ID = 'Irbk'
+public constant WALKABLE_ID = 'Idrt'
