@@ -4,13 +4,23 @@ import GameConstants
 
 int iterator = 0
 
-public function initCreeps()
+public function initSmallCreeps()
 	let expt = GetExpiredTimer()
 	AREA_LEFT_BOT.addSmallCreep(vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128))
 	
 	iterator++
 	if iterator > 30
-		expt.release()
+		iterator = 0
+		expt.start(0.1, function initBigCreeps)
+	else
+		expt.start(0.1, function initSmallCreeps)
+		
+public function initBigCreeps()
+	let expt = GetExpiredTimer()
+	AREA_LEFT_BOT.addBigCreep(vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128))
+	
+	iterator++
+	if iterator > 15
 		return
 	else
-		expt.start(0.05, function initCreeps)
+		expt.start(0.1, function initBigCreeps)
