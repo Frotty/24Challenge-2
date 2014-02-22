@@ -4,21 +4,31 @@ import HashMap
 import Tile
 import LinkedList
 import GameConstants
-
-
-constant int width = 44
+import ClosureTimers
+import Area
 
 HashMap<int, int> highestTile = new HashMap<int, int>()
 int tileFace = 0
 
-function generateMaze(Tile a)
+Tile current
+
+public function generateMaze()
+	let expt = GetExpiredTimer()
+	let a = expt.getData() castTo Area
 	tileFace = 0
-	a.changeTType(WALKABLE_ID)
-	Tile current = a
-	for int i = 1 to 50
+	Tile start = a.getRandomBottomTile()
+	start.changeTType(WALKABLE_ID)
+	current = start
+	doPeriodically(1., (CallbackPeriodic cb) -> begin
 		LinkedList<Turn> turns = getPossibleTurns(current)
 		int index = GetRandomInt(0, turns.getSize() - 1)
 		current = turns.get(index).do(current)
+	end)
+	
+//	for int i = 1 to 50
+//		LinkedList<Turn> turns = getPossibleTurns(current)
+//		int index = GetRandomInt(0, turns.getSize() - 1)
+//		current = turns.get(index).do(current)
 		
 	
 function getPossibleTurns(Tile t) returns LinkedList<Turn>
@@ -26,27 +36,31 @@ function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	switch tileFace
 		case -180
 			temp.add(goLeft())
-			if highestTile.get(t.ipos.x) < t.ipos.y + 2
+			if highestTile.get(t.ipos.x) < t.ipos.y - 1 and t.ipos.y > 3
 				temp.add(goDown())
 		case -90
 			temp.add(goUp())
-			if not t.ipos.x > 41
-				temp.add(goDown())
-				temp.add(goLeft())
+			if not t.ipos.x < 2
+				if highestTile.get(t.ipos.x) < t.ipos.y - 1 and t.ipos.y > 3
+					temp.add(goDown())
+				if highestTile.get(t.ipos.x - 2) < t.ipos.y and not t.ipos.x < 2
+					temp.add(goLeft())
 		case 0
 			temp.add(goUp())
-			if not t.ipos.x > 41
+			if not t.ipos.x > WIDTH - 3 and highestTile.get(t.ipos.x + 2) < t.ipos.y
 				temp.add(goRight())
-			if not t.ipos.x < 2
+			if not t.ipos.x < 2 and highestTile.get(t.ipos.x - 2) < t.ipos.y
 				temp.add(goLeft())
 		case 90
 			temp.add(goUp())
-			if not t.ipos.x > 41
-				temp.add(goDown())
-				temp.add(goRight())
+			if not t.ipos.x > WIDTH - 3
+				if highestTile.get(t.ipos.x) < t.ipos.y - 1 and t.ipos.y > 3
+					temp.add(goDown())
+				if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
+					temp.add(goRight())
 		case 180
 			temp.add(goRight())
-			if highestTile.get(t.ipos.x) < t.ipos.y + 2
+			if highestTile.get(t.ipos.x) < t.ipos.y - 1 and t.ipos.y > 3
 				temp.add(goDown())
 			
 				
@@ -54,6 +68,7 @@ function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	
 function goUp() returns Turn
 	return (Tile start) -> begin
+		print("up")
 		if tileFace == 90
 			tileFace = 0
 		else if tileFace == -90
@@ -67,6 +82,7 @@ function goUp() returns Turn
 	
 function goDown() returns Turn
 	return (Tile start) -> begin 
+		print("down")
 		if tileFace == 90
 			tileFace = 180
 		else if tileFace == -90
@@ -78,6 +94,7 @@ function goDown() returns Turn
 	
 function goRight() returns Turn
 	return (Tile start) -> begin
+		print("right")
 		if tileFace == 0
 			tileFace = 90
 		else if tileFace == 180
@@ -91,6 +108,7 @@ function goRight() returns Turn
 		
 function goLeft() returns Turn
 	return (Tile start) -> begin
+		print("left")
 		if tileFace == 0
 			tileFace = -90
 		else if tileFace == -180
@@ -98,7 +116,7 @@ function goLeft() returns Turn
 		Tile next = start.getNeighbour(Side.LEFT) 
 		highestTile.put(next.ipos.x, next.ipos.y)
 		next.changeTType(WALKABLE_ID)
-		highestTile.put(next.getNeighbour(Side.BOTTOM).ipos.x, next.getNeighbour(Side.BOTTOM).ipos.y)
+		highestTile.put(next.getNeighbour(Side.LEFT).ipos.x, next.getNeighbour(Side.LEFT).ipos.y)
 		return next.getNeighbour(Side.LEFT)..changeTType(WALKABLE_ID)
 	end
 		

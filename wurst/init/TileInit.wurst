@@ -3,6 +3,7 @@ import Tile
 import GameConstants
 import GameStart
 import Area
+import MazeGenerator
 
 
 
@@ -27,6 +28,8 @@ public function initTiles()
 		expt.release()
 		startGame()
 	else
-		expt.start(0.01, function initTiles)
+		expt.setData(AREA_LEFT_BOT castTo int)
+		expt.start(0.01, function generateMaze)
+		
 			
 		
