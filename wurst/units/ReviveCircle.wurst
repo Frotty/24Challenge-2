@@ -32,13 +32,13 @@ public class ReviveCircle extends Entity
 	override function onInRange()
 		if active
 			let data = GetTriggerUnit().getClass()
-			if data.owner.isAllyOf(this.owner)
+			if data instanceof Escaper and data.owner.isAllyOf(this.owner)
 				reset()
-				pData[owner.getId()].escaper.revive(pos)
+				pData[owner.getId()].escaper.revive(pos, data castTo Escaper)
 		else
 			error("InRange on inactive ReviveCircle")
 			
-		
+				
 
 public function initReviveCircles()
 	for i = 0 to 11

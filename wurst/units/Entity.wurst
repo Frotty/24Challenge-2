@@ -1,6 +1,7 @@
 package Entity
 import Tile
 import LinkedListModule
+import public GameConstants
 
 public abstract class Entity
 	use LinkedListModule
@@ -16,7 +17,6 @@ public abstract class Entity
 	static trigger rectTrig = CreateTrigger()
 	static trigger inRangeTrig = CreateTrigger()
 	
-	Tile currentTile = null
 	
 	construct(vec2 pos, player owner, int id, real radius)
 		this.pos 	= pos
