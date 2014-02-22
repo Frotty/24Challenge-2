@@ -5,7 +5,7 @@ import LinkedList
 import Entity
 import Creep
 
-public key startIndex 
+public int startIndex 
 
 public class Area
 	hashtable tileTable = InitHashtable()
@@ -24,8 +24,8 @@ public class Area
 		return tileTable.loadInt(k.x, k.y) castTo Tile
 		
 	function getRandomBottomTile() returns Tile
-		startIndex = key(GetRandomInt(4, WIDTH-5), 0)
-		return getTile(startIndex)
+		startIndex = (GetRandomInt(4, WIDTH-5))
+		return getTile(startIndex, 0)
 		
 	function isPointInArea(vec2 pos) returns boolean
 		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
@@ -60,7 +60,7 @@ public Area AREA_RIGHT_BOT
 public Area AREA_RIGHT_TOP
 
 public function initAreas()
-	AREA_LEFT_BOT = new Area(vec2(-5504,-6528), vec2(-128, -1024))
-	AREA_LEFT_TOP = new Area(vec2(-5504,0), vec2(-128, 6016))
-	AREA_RIGHT_BOT = new Area(vec2(640,-6528),vec2(5504,-1024))
-	AREA_RIGHT_TOP = new Area(vec2(640,0), vec2(5504,6016))
+	AREA_LEFT_BOT = new Area(vec2(-5504.-64.,-6528.-64.), vec2(-128.+64., -1024.+64.))
+	AREA_LEFT_TOP = new Area(vec2(-5504-64.,0-64.), vec2(-128+64., 6016+64.))
+	AREA_RIGHT_BOT = new Area(vec2(640-64.,-6528-64.),vec2(5504+64.,-1024+64.))
+	AREA_RIGHT_TOP = new Area(vec2(640-64.,0-64.), vec2(5504+64.,6016+64.))

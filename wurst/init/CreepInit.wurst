@@ -1,6 +1,7 @@
 package CreepInit
 import Area
 import GameConstants
+import GameStart
 
 int iterator = 0
 
@@ -11,9 +12,9 @@ public function initSmallCreeps()
 	iterator++
 	if iterator > 30
 		iterator = 0
-		expt.start(0.1, function initBigCreeps)
+		expt.start(0.05, function initBigCreeps)
 	else
-		expt.start(0.1, function initSmallCreeps)
+		expt.start(0.05, function initSmallCreeps)
 		
 public function initBigCreeps()
 	let expt = GetExpiredTimer()
@@ -21,6 +22,6 @@ public function initBigCreeps()
 	
 	iterator++
 	if iterator > 15
-		return
+		expt.start(0.05, function startGame)
 	else
-		expt.start(0.1, function initBigCreeps)
+		expt.start(0.05, function initBigCreeps)

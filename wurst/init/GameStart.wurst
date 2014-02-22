@@ -7,9 +7,18 @@ import Escaper
 import Area
 import CreepInit
 
+
+
 public function startGame()
 	startEntityLoop()
-	new Escaper(vec2(-3200,-6500), Player(0))
+	let startleft = vec2(AREA_LEFT_BOT.zero.x + startIndex * 128. +64, AREA_LEFT_BOT.zero.y+64)
+	let startright = vec2(AREA_RIGHT_BOT.zero.x + startIndex * 128. +64, AREA_RIGHT_BOT.zero.y+64)
+	for i = 0 to 11
+		if pData[i] != null
+			if i < 6
+				pData[i].p..select((new Escaper(startleft, pData[i].p)).actor)..panCamToTimed(pData[i].escaper.actor, 0.)
+			else
+				pData[i].p..select((new Escaper(startright, pData[i].p)).actor)..panCamToTimed(pData[i].escaper.actor, 0.)
 
 function initGame()
 	let t = GetExpiredTimer()
