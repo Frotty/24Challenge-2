@@ -1,0 +1,25 @@
+package Escaper
+import Entity
+import ReviveCircle
+import PlayerData
+
+constant ESCAPER_ID = '0000'
+constant ESCAPER_RADIUS = 32.
+
+public class Escaper extends Entity
+	
+	construct(vec2 pos, player owner)
+		super(pos, owner, ESCAPER_ID, ESCAPER_RADIUS)
+		active = true
+	
+	override function onDeath()
+		pData[this.owner.getId()].activateRevive()
+		
+	override function onUpdate()
+		pos = actor.getPos()
+		pos += vel
+		actor.setXY(pos)
+		vel *= .92
+		vel.trim(1.)
+		
+	override function onInRange()

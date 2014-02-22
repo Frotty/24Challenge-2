@@ -1,0 +1,56 @@
+package Entity
+import Tile
+import LinkedListModule
+
+public abstract class Entity
+	use LinkedListModule
+	unit 	actor
+	player 	owner
+	
+	vec2 	pos
+	vec2 	vel
+	
+	boolean active = false
+	
+	static trigger deathTrig = CreateTrigger()
+	static trigger rectTrig = CreateTrigger()
+	static trigger inRangeTrig = CreateTrigger()
+	
+	Tile currentTile = null
+	
+	construct(vec2 pos, player owner, int id, real radius)
+		this.pos 	= pos
+		this.owner 	= owner
+		
+		actor = createUnit(owner, id, pos, angle(0))
+		actor.setClass(this)
+		let u = actor
+		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
+		
+	abstract function onDeath()
+	abstract function onUpdate()
+	abstract function onInRange()
+	
+	
+	function setXY(vec2 pos)
+		this.pos = pos
+		actor.setXY(pos)
+		
+
+public function startEntityLoop()
+	CreateTimer().startPeriodic(ANIMATION_PERIOD, () -> begin
+		var e = Entity.first
+		while e != null
+			if e.active
+				e.onUpdate()
+			e = e.next
+	end)
+	
+public function unit.getClass() returns Entity
+	return this.getUserData() castTo Entity
+	
+public function unit.setClass(Entity u)
+	this.setUserData(u castTo int)
+	
+init
+	Entity.deathTrig.addAction(() -> GetTriggerUnit().getClass().onDeath())
