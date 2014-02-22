@@ -1,14 +1,43 @@
 package Tile
 
+hashtable ht = InitHashtable()
+public tuple key(int x, int y)
+
+public enum Side
+	TOP
+	RIGHT
+	BOTTOM
+	LEFT	
+
 public class Tile
 	vec2 pos
+	key ipos
 	int ttypeId
 	
-	construct(vec2 pos)
+	construct(vec2 pos, int x, int y)
 		this.pos = pos
+		this.ipos = key(x,y)
+		ht.saveInt(x, y, this castTo int)
 		
 	function changeTType(int ttype)
-		SetTerrainType(pos.x, pos.y, ttype, -1, 0, 0)
+		SetTerrainType(pos.x, pos.y, ttype, -1, 1, 0)
+		
+	function getNeighbour(Side side) returns Tile
+		switch side
+			case TOP
+				return ht.loadInt(ipos.x, ipos.y+1) castTo Tile
+			case RIGHT
+				return ht.loadInt(ipos.x+1, ipos.y) castTo Tile
+			case BOTTOM
+				return ht.loadInt(ipos.x, ipos.y-1) castTo Tile
+			case LEFT
+				return ht.loadInt(ipos.x-1, ipos.y) castTo Tile
+			default
+				error("Invalid Type")
+				return null
+		
+
+	
 		
 		
 		
