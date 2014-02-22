@@ -1,0 +1,32 @@
+package MazeGenerator
+
+import HashMap
+import Tile
+import LinkedList
+
+
+constant int width = 44
+
+HashMap<int, int> highestTile = new HashMap<int, int>()
+int tileFace = 0
+
+function generateMaze(Tile start)
+	skip
+	
+function getPossibleTurns(Tile t) returns LinkedList<Turn>
+	var temp = new LinkedList<Turn>()
+	if tileFace == 0
+		temp.addTurn((Tile start) -> begin 
+			Tile next = start.getTop()
+			next.changeTType()
+			return next.getTop()..changeTType()
+		end)
+		if not R2I(t.pos.x) > 41
+			temp.addTurn((Tile start) -> start.getRight().getRight())
+		
+			
+public abstract class Turn
+	
+	abstract function do(Tile start) returns Tile
+	
+	
