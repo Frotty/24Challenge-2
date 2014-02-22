@@ -4,3 +4,11 @@ public class Tile
 	vec2 pos
 	int ttypeId
 	
+	construct(vec2 pos)
+		this.pos = pos
+		
+	function changeTType(int ttype)
+		SetTerrainType(pos.x, pos.y, ttype, -1, 0, 0)
+		
+		
+		

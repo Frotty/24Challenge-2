@@ -1,0 +1,19 @@
+package PlayerData
+
+PlayerData array pData
+
+public class PlayerData
+	player 	p
+	int 	id
+	
+	construct(player p)
+		this.p = p
+		id = p.getId()
+		pData[id] = this
+		
+	
+public function initPlayerData()
+	for i = 0 to 11
+		var p = Player(i)
+		if GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING
+			new PlayerData(p)

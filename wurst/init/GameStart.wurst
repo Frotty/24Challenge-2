@@ -1,2 +1,9 @@
 package GameStart
 
+function startGame()
+
+function initGame()
+
+init
+	let t = getTimer()
+	t.start(0.01, function initGame)
