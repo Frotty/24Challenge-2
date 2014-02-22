@@ -3,6 +3,7 @@ package MazeGenerator
 import HashMap
 import Tile
 import LinkedList
+import GameConstants
 
 
 constant int width = 44
@@ -10,19 +11,24 @@ constant int width = 44
 HashMap<int, int> highestTile = new HashMap<int, int>()
 int tileFace = 0
 
-function generateMaze(Tile start)
+function generateMaze(Tile a)
 	skip
 	
 function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	var temp = new LinkedList<Turn>()
 	if tileFace == 0
-		temp.addTurn((Tile start) -> begin 
-			Tile next = start.getTop()
-			next.changeTType()
-			return next.getTop()..changeTType()
+		temp.add((Tile start) -> begin 
+			Tile next = start.getNeighbour(Side.TOP) 
+			next.changeTType(WALKABLE_ID)
+			return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
 		end)
 		if not R2I(t.pos.x) > 41
-			temp.addTurn((Tile start) -> start.getRight().getRight())
+			temp.add((Tile start) -> begin
+				Tile next = start.getNeighbour(Side.RIGHT)
+				next.changeTType(WALKABLE_ID)
+				return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
+			end)
+	return temp
 		
 			
 public abstract class Turn
