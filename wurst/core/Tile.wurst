@@ -40,14 +40,12 @@ public class Tile
 		for i = -10 to 10
 			for j = -10 to 10
 				let t = area.tileTable.loadInt(ipos.x+i, ipos.y+j) castTo Tile
-				print((t castTo int).toString() + " " + t.ttypeId.toString())
 				if t != null and t.ttypeId == WALKABLE_ID
 					tiles.add(t)
 		if tiles.getSize() < 1
-			print("no nearby tile walkable")
+			skip
 		else
 			val = tiles.get(GetRandomInt(0, tiles.getSize()-1))
-			print("found Tile")
 		destroy tiles
 		return val
 	

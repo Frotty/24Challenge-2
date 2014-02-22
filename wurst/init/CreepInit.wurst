@@ -1,26 +1,35 @@
 package CreepInit
 import Area
 import GameConstants
+import GameStart
+import Creep
+
 
 int iterator = 0
 
 public function initSmallCreeps()
 	let expt = GetExpiredTimer()
-	AREA_LEFT_BOT.addSmallCreep(vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128))
+	let offset = vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128)
+	let offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)-AREA_LEFT_BOT.zero
+	AREA_LEFT_BOT.addSmallCreep(offset, offset2)
+	AREA_RIGHT_BOT.addSmallCreep(offset, offset2)
 	
 	iterator++
-	if iterator > 30
+	if iterator > 2
 		iterator = 0
-		expt.start(0.1, function initBigCreeps)
+		expt.start(0.05, function initBigCreeps)
 	else
-		expt.start(0.1, function initSmallCreeps)
+		expt.start(0.05, function initSmallCreeps)
 		
 public function initBigCreeps()
 	let expt = GetExpiredTimer()
-	AREA_LEFT_BOT.addBigCreep(vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128))
+	let offset = vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128)
+	let offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)-AREA_LEFT_BOT.zero
+	AREA_LEFT_BOT.addBigCreep(offset, offset2)
+	AREA_RIGHT_BOT.addBigCreep(offset, offset2)
 	
 	iterator++
-	if iterator > 15
-		return
+	if iterator > 2
+		expt.start(0.05, function startGame)
 	else
-		expt.start(0.1, function initBigCreeps)
+		expt.start(0.05, function initBigCreeps)

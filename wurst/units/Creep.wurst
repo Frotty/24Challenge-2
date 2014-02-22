@@ -25,6 +25,7 @@ class Creep extends Entity
 		
 		
 	override function onInRange()
+		print("inrange")
 		let data = GetTriggerUnit().getClass()
 		if data instanceof Escaper
 			data.actor.kill()
