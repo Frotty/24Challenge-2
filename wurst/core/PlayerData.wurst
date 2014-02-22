@@ -17,6 +17,7 @@ public class PlayerData
 		pData[id] = this
 		
 	function activateRevive()
+		print("activate")
 		revCircle.activateAt(escaper.pos)
 		
 	
