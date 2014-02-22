@@ -5,6 +5,8 @@ import LinkedList
 import Entity
 import Creep
 
+public key startIndex 
+
 public class Area
 	hashtable tileTable = InitHashtable()
 	LinkedList<Entity> entities = new LinkedList<Entity>()
@@ -18,8 +20,12 @@ public class Area
 	function getTile(int x, int y) returns Tile
 		return tileTable.loadInt(x, y) castTo Tile
 		
+	function getTile(key k) returns Tile
+		return tileTable.loadInt(k.x, k.y) castTo Tile
+		
 	function getRandomBottomTile() returns Tile
-		return getTile(GetRandomInt(4, WIDTH-5),0)
+		startIndex = key(GetRandomInt(4, WIDTH-5), 0)
+		return getTile(startIndex)
 		
 	function isPointInArea(vec2 pos) returns boolean
 		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
