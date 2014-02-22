@@ -3,10 +3,11 @@ import PlayerData
 import TileInit
 import ReviveCircle
 import Entity
+import Escaper
 
 public function startGame()
 	startEntityLoop()
-	
+	new Escaper(vec2(-3200,-6500), Player(0))
 
 function initGame()
 	print("init started......")

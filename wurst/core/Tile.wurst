@@ -1,6 +1,7 @@
 package Tile
+import GameConstants
+import Area
 
-hashtable ht = InitHashtable()
 public tuple key(int x, int y)
 
 public enum Side
@@ -10,20 +11,20 @@ public enum Side
 	LEFT	
 
 public class Tile
+	Area area
 	vec2 pos
 	key ipos
-	int ttypeId
+	int ttypeId = UNWALKABLE_ID
 	
-	construct(vec2 pos, int x, int y)
-		this.pos = pos
+	construct(Area area, int x, int y)
+		this.area = area
 		this.ipos = key(x,y)
-		ht.saveInt(x, y, this castTo int)
-		
-	static function getFromIndex(key index) returns Tile
-		return ht.loadInt(index.x, index.y+1) castTo Tile
+		this.pos = vec2(area.zero.x + 128 * x, area.zero.y + 128 * y)		
+		area.tileTable.saveInt(x, y, this castTo int)
+	
 		
 	static function getFromPos(vec2 pos) returns Tile
-		return ht.loadInt(pos.x.toInt() div 128, pos.y.toInt() div 128) castTo Tile
+		return getAreaFromPoint(pos).tileTable.loadInt(pos.x.toInt() div 128, pos.y.toInt() div 128) castTo Tile
 		
 		
 	function changeTType(int ttype)
@@ -32,13 +33,13 @@ public class Tile
 	function getNeighbour(Side side) returns Tile
 		switch side
 			case TOP
-				return ht.loadInt(ipos.x, ipos.y+1) castTo Tile
+				return area.tileTable.loadInt(ipos.x, ipos.y+1) castTo Tile
 			case RIGHT
-				return ht.loadInt(ipos.x+1, ipos.y) castTo Tile
+				return area.tileTable.loadInt(ipos.x+1, ipos.y) castTo Tile
 			case BOTTOM
-				return ht.loadInt(ipos.x, ipos.y-1) castTo Tile
+				return area.tileTable.loadInt(ipos.x, ipos.y-1) castTo Tile
 			case LEFT
-				return ht.loadInt(ipos.x-1, ipos.y) castTo Tile
+				return area.tileTable.loadInt(ipos.x-1, ipos.y) castTo Tile
 			default
 				error("Invalid Type")
 				return null

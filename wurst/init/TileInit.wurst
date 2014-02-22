@@ -2,40 +2,29 @@ package TileInit
 import Tile
 import GameConstants
 import GameStart
+import Area
 
-
-
-constant HEIGHT_AND_WIDTH		= 44
-
-constant LEFT_BOT_AREA_ZERO 	= vec2(-6144,-6656)
-constant LEFT_TOP_AREA_ZERO 	= vec2(-6144,-256)
-constant RIGHT_BOT_AREA_ZERO 	= vec2(512,-6656)
-constant RIGHT_TOP_AREA_ZERO 	= vec2(512,-256)
+constant HEIGHT = 44
+constant WIDTH	= 47
 
 var row = 0
 
 function initRow()
 	let expt = GetExpiredTimer()
-	for j = 0 to HEIGHT_AND_WIDTH-1
-		let t = new Tile(vec2(LEFT_BOT_AREA_ZERO.x+128*row+64, LEFT_BOT_AREA_ZERO.y+128*j+64), row, j)
-		t.changeTType(UNWALKABLE_ID)
-		
+	for i = 0 to WIDTH-1
+		new Tile(AREA_LEFT_BOT, row, i)
 
-	for j = 0 to HEIGHT_AND_WIDTH-1
-		let t = new Tile(vec2(LEFT_TOP_AREA_ZERO.x+128*row+64, LEFT_TOP_AREA_ZERO.y+128*j+64), row, j)
-		t.changeTType(UNWALKABLE_ID)
+	for i = 0 to WIDTH-1
+		new Tile(AREA_LEFT_TOP, row, i)
 		
-
-	for j = 0 to HEIGHT_AND_WIDTH-1
-		let t = new Tile(vec2(RIGHT_BOT_AREA_ZERO.x+128*row+64, RIGHT_BOT_AREA_ZERO.y+128*j+64), row, j)
-		t.changeTType(UNWALKABLE_ID)
+	for i = 0 to WIDTH-1
+		new Tile(AREA_RIGHT_BOT, row, i)
 		
+	for i = 0 to WIDTH-1
+		new Tile(AREA_RIGHT_TOP, row, i)
 
-	for j = 0 to HEIGHT_AND_WIDTH-1
-		let t = new Tile(vec2(RIGHT_TOP_AREA_ZERO.x+128*row+64, RIGHT_TOP_AREA_ZERO.y+128*j+64), row, j)
-		t.changeTType(UNWALKABLE_ID)
 	row++
-	if row > HEIGHT_AND_WIDTH-1
+	if row > HEIGHT-1
 		expt.release()
 		startGame()
 	else

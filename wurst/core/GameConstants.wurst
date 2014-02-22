@@ -3,4 +3,4 @@ package GameConstants
 public constant MAP_NAME 		= "Dualscape-Duell"
 
 public constant UNWALKABLE_ID 	= 'Idrt'
-public constant WALKABLE_ID 	= 'Itbk'
+public constant WALKABLE_ID 	= 'Idtr'

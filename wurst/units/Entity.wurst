@@ -36,6 +36,9 @@ public abstract class Entity
 		this.pos = pos
 		actor.setXY(pos)
 		
+	ondestroy
+		remove()
+		
 
 public function startEntityLoop()
 	CreateTimer().startPeriodic(ANIMATION_PERIOD, () -> begin
@@ -43,6 +46,7 @@ public function startEntityLoop()
 		while e != null
 			if e.active
 				e.onUpdate()
+				print("update")
 			e = e.next
 	end)
 	
