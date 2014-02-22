@@ -1,0 +1,6 @@
+package Tile
+
+public class Tile
+	vec2 pos
+	int ttypeId
+	
