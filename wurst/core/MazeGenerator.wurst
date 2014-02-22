@@ -25,6 +25,7 @@ public function generateMaze()
 		int index = GetRandomInt(0, turns.getSize() - 1)
 		current = turns.get(index).do(current)
 		if current.ipos.y == HEIGHT-2
+			current.getNeighbour(Side.TOP).changeTType(WALKABLE_ID)
 			destroy cb
 			print(">>>>>>>>>>destroyed")
 			expt.start(0.01, function initSmallCreeps)
