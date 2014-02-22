@@ -23,6 +23,7 @@ public class Escaper extends Entity
 		
 	override function onUpdate()
 		currentTile = Tile.getFromPos(pos)
+		print("currentTile: " + (currentTile castTo int).toString())
 		if currentTile.ttypeId == UNWALKABLE_ID
 			actor.kill()
 		pos = actor.getPos()

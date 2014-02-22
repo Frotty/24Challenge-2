@@ -4,6 +4,7 @@ import TileInit
 import ReviveCircle
 import Entity
 import Escaper
+import Area
 
 public function startGame()
 	startEntityLoop()
@@ -17,7 +18,9 @@ function initGame()
 	print("init Revive.......")
 	initReviveCircles()
 	print("init Revive.......done!")
-	
+	print("init Areas........")
+	initAreas()
+	print("init Areas........done!")
 	// Last init, then maze genration
 	print("init Tiles........")
 	initTiles()

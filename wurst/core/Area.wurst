@@ -30,7 +30,13 @@ public function getAreaFromPoint(vec2 pos) returns Area
 		error("Point not in any Area")
 		return null
 		
-public Area AREA_LEFT_BOT = new Area(vec2(-6016,-6528), vec2(-128, -1024))
-public Area AREA_LEFT_TOP = new Area(vec2(-6016,0), vec2(-128, 6016))
-public Area AREA_RIGHT_BOT = new Area(vec2(640,-6528),vec2(6016,-1024))
-public Area AREA_RIGHT_TOP = new Area(vec2(640,0), vec2(6016,6016))
+public Area AREA_LEFT_BOT
+public Area AREA_LEFT_TOP
+public Area AREA_RIGHT_BOT
+public Area AREA_RIGHT_TOP
+
+public function initAreas()
+	AREA_LEFT_BOT = new Area(vec2(-5504,-6528), vec2(-128, -1024))
+	AREA_LEFT_TOP = new Area(vec2(-5504,0), vec2(-128, 6016))
+	AREA_RIGHT_BOT = new Area(vec2(640,-6528),vec2(5504,-1024))
+	AREA_RIGHT_TOP = new Area(vec2(640,0), vec2(5504,6016))

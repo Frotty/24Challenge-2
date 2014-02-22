@@ -24,7 +24,8 @@ public class Tile
 	
 		
 	static function getFromPos(vec2 pos) returns Tile
-		return getAreaFromPoint(pos).tileTable.loadInt(pos.x.toInt() div 128, pos.y.toInt() div 128) castTo Tile
+		let area = getAreaFromPoint(pos)
+		return area.tileTable.loadInt((pos.x-area.zero.x).toInt() div 128, (pos.y-area.zero.y).toInt() div 128) castTo Tile
 		
 		
 	function changeTType(int ttype)

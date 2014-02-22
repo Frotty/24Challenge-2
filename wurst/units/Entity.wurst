@@ -46,7 +46,6 @@ public function startEntityLoop()
 		while e != null
 			if e.active
 				e.onUpdate()
-				print("update")
 			e = e.next
 	end)
 	
