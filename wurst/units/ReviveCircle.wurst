@@ -17,7 +17,6 @@ public class ReviveCircle extends Entity
 		setXY(pos)
 		actor.show()
 		active = true
-		print("set")
 	
 	function reset()
 		actor.hide()
@@ -34,8 +33,8 @@ public class ReviveCircle extends Entity
 		if active
 			let data = GetTriggerUnit().getClass()
 			if data instanceof Escaper and data.owner.isAllyOf(this.owner)
+				pData[owner.getId()].escaper.revive(data.pos, data castTo Escaper)
 				reset()
-				pData[owner.getId()].escaper.revive(pos, data castTo Escaper)
 		else
 			error("InRange on inactive ReviveCircle")
 			
@@ -45,6 +44,5 @@ public function initReviveCircles()
 	for i = 0 to 11
 		if pData[i] != null
 			pData[i].revCircle = new ReviveCircle(pData[i].p)
-			print("rev created")
 			
 		

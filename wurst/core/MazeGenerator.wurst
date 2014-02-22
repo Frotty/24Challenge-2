@@ -19,6 +19,7 @@ public function generateMaze()
 	tileFace = 0
 	Tile start = a.getRandomBottomTile()
 	start.changeTType(WALKABLE_ID)
+	AREA_RIGHT_BOT.getTile(start.ipos.x, start.ipos.y)..changeTType(WALKABLE_ID)
 	current = start
 	doPeriodically(.05, (CallbackPeriodic cb) -> begin
 		LinkedList<Turn> turns = getPossibleTurns(current)
@@ -26,8 +27,8 @@ public function generateMaze()
 		current = turns.get(index).do(current)
 		if current.ipos.y == HEIGHT-2
 			current.getNeighbour(Side.TOP).changeTType(WALKABLE_ID)
+			AREA_RIGHT_BOT.getTile(current.ipos.x, current.ipos.y+1)..changeTType(WALKABLE_ID)
 			destroy cb
-			print(">>>>>>>>>>destroyed")
 			expt.start(0.01, function initSmallCreeps)
 	end)
 	
@@ -72,7 +73,6 @@ function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	
 function goUp() returns Turn
 	return (Tile start) -> begin
-		print("up")
 		if tileFace == 90
 			tileFace = 0
 		else if tileFace == -90
@@ -80,25 +80,26 @@ function goUp() returns Turn
 		Tile next = start.getNeighbour(Side.TOP) 
 		highestTile.put(next.ipos.x, next.ipos.y)
 		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
 		highestTile.put(next.getNeighbour(Side.TOP).ipos.x, next.getNeighbour(Side.TOP).ipos.y)
 		return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
 	end
 	
 function goDown() returns Turn
 	return (Tile start) -> begin 
-		print("down")
 		if tileFace == 90
 			tileFace = 180
 		else if tileFace == -90
 			tileFace = -180
 		Tile next = start.getNeighbour(Side.BOTTOM) 
 		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.BOTTOM)..changeTType(WALKABLE_ID)
+		
 		return next.getNeighbour(Side.BOTTOM)..changeTType(WALKABLE_ID)
 	end
 	
 function goRight() returns Turn
 	return (Tile start) -> begin
-		print("right")
 		if tileFace == 0
 			tileFace = 90
 		else if tileFace == 180
@@ -106,13 +107,13 @@ function goRight() returns Turn
 		Tile next = start.getNeighbour(Side.RIGHT) 
 		highestTile.put(next.ipos.x, next.ipos.y)
 		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.RIGHT)..changeTType(WALKABLE_ID)
 		highestTile.put(next.getNeighbour(Side.RIGHT).ipos.x, next.getNeighbour(Side.RIGHT).ipos.y)
 		return next.getNeighbour(Side.RIGHT)..changeTType(WALKABLE_ID)
 	end
 		
 function goLeft() returns Turn
 	return (Tile start) -> begin
-		print("left")
 		if tileFace == 0
 			tileFace = -90
 		else if tileFace == -180
@@ -120,6 +121,7 @@ function goLeft() returns Turn
 		Tile next = start.getNeighbour(Side.LEFT) 
 		highestTile.put(next.ipos.x, next.ipos.y)
 		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.LEFT)..changeTType(WALKABLE_ID)
 		highestTile.put(next.getNeighbour(Side.LEFT).ipos.x, next.getNeighbour(Side.LEFT).ipos.y)
 		return next.getNeighbour(Side.LEFT)..changeTType(WALKABLE_ID)
 	end

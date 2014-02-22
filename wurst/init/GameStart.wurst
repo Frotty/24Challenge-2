@@ -1,0 +1,51 @@
+package GameStart
+import PlayerData
+import TileInit
+import ReviveCircle
+import Entity
+import Escaper
+import Area
+import CreepInit
+
+
+
+public function startGame()
+	startEntityLoop()
+	let startleft = vec2(AREA_LEFT_BOT.zero.x + startIndex * 128. +64, AREA_LEFT_BOT.zero.y+64)
+	let startright = vec2(AREA_RIGHT_BOT.zero.x + startIndex * 128. +64, AREA_RIGHT_BOT.zero.y+64)
+	SetCameraField(CAMERA_FIELD_TARGET_DISTANCE, 2750, 0)
+	SetCameraField(CAMERA_FIELD_FIELD_OF_VIEW, 60, 0)
+	for i = 0 to 11
+		if pData[i] != null
+			if i < 6
+				pData[i].p..select((new Escaper(startleft, pData[i].p)).actor)..panCamToTimed(pData[i].escaper.actor, 0.)
+			else
+				pData[i].p..select((new Escaper(startright, pData[i].p)).actor)..panCamToTimed(pData[i].escaper.actor, 0.)
+
+function initGame()
+	let t = GetExpiredTimer()
+	SetTerrainFogEx(0, 20000, 20000, 0, 0, 0, 0)
+	SetCameraField(CAMERA_FIELD_FARZ, 100000, 0)
+	SetCameraField(CAMERA_FIELD_TARGET_DISTANCE, 9000, 0)
+	SetCameraField(CAMERA_FIELD_FIELD_OF_VIEW, 80, 0)
+	SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK, 270, 0)
+	SetCameraPosition(-2750, -3650)
+	print("init started......")
+	print("init PlayerData...")
+	initPlayerData()
+	print("init PlayerData...done!")
+	print("init Revive.......")
+	initReviveCircles()
+	print("init Revive.......done!")
+	print("init Areas........")
+	initAreas()
+	print("init Areas........done!")
+	// Last init, then maze genration
+	print("init Tiles........")
+	t.start(0.01, function initTiles)
+	print("init Tiles........done!")
+	
+
+init
+	let t = getTimer()
+	t.start(0.01, function initGame)

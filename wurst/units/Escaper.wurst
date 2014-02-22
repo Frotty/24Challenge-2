@@ -21,7 +21,6 @@ public class Escaper extends Entity
 		
 	
 	override function onDeath()
-		print("died")
 		alive = false
 		pData[this.owner.getId()].activateRevive()
 		

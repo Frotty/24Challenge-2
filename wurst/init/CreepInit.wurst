@@ -11,11 +11,12 @@ public function initSmallCreeps()
 	let expt = GetExpiredTimer()
 	let offset = vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128)
 	let offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)-AREA_LEFT_BOT.zero
-	AREA_LEFT_BOT.addSmallCreep(offset, offset2)
-	AREA_RIGHT_BOT.addSmallCreep(offset, offset2)
-	
+	if offset2.length() > 100
+		AREA_LEFT_BOT.addSmallCreep(offset, offset2)
+		AREA_RIGHT_BOT.addSmallCreep(offset, offset2)
+		
 	iterator++
-	if iterator > 2
+	if iterator > 30
 		iterator = 0
 		expt.start(0.05, function initBigCreeps)
 	else
@@ -29,7 +30,7 @@ public function initBigCreeps()
 	AREA_RIGHT_BOT.addBigCreep(offset, offset2)
 	
 	iterator++
-	if iterator > 2
+	if iterator > 15
 		expt.start(0.05, function startGame)
 	else
 		expt.start(0.05, function initBigCreeps)
