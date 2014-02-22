@@ -23,3 +23,6 @@ public class Escaper extends Entity
 		vel.trim(1.)
 		
 	override function onInRange()
+	
+	function revive(vec2 pos)
+		
