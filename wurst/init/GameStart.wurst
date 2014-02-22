@@ -10,9 +10,15 @@ import CreepInit
 public function startGame()
 	startEntityLoop()
 	new Escaper(vec2(-3200,-6500), Player(0))
-
+	
 function initGame()
 	let t = GetExpiredTimer()
+	SetTerrainFogEx(0, 20000, 20000, 0, 0, 0, 0)
+	SetCameraField(CAMERA_FIELD_FARZ, 100000, 0)
+	SetCameraField(CAMERA_FIELD_TARGET_DISTANCE, 9000, 0)
+	SetCameraField(CAMERA_FIELD_FIELD_OF_VIEW, 80, 0)
+	SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK, 270, 0)
+	SetCameraPosition(-2750, -3650)
 	print("init started......")
 	print("init PlayerData...")
 	initPlayerData()

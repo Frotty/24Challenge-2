@@ -60,13 +60,13 @@ function getPossibleTurns(Tile t) returns LinkedList<Turn>
 		case 90
 			temp.add(goUp())
 			if not t.ipos.x > WIDTH - 3
-				if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 3
+				if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
 					temp.add(goDown())
 				if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
 					temp.add(goRight())
 		case 180
 			temp.add(goRight())
-			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 3
+			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
 				temp.add(goDown())
 	return temp
 	
