@@ -4,20 +4,24 @@ import Escaper
 import PlayerData
 import MapBounds
 
-constant REVIVECIRCLE_ID = '0000'
+constant REVIVECIRCLE_ID = 'urev'
 constant REVIVECIRCLE_RADIUS = 64.
 
 public class ReviveCircle extends Entity
 	
 	construct(player owner)
 		super(vec2(mapMinX, mapMinY), owner, REVIVECIRCLE_ID, REVIVECIRCLE_RADIUS)	
-		active = false
-
 		actor.hide()
 		
 	function activateAt(vec2 pos)
 		setXY(pos)
 		actor.show()
+		active = true
+	
+	function reset()
+		actor.hide()
+		setXY(vec2(mapMinX, mapMinY))
+		active = false
 		
 	
 	override function onDeath()
@@ -26,9 +30,19 @@ public class ReviveCircle extends Entity
 	override function onUpdate()
 	
 	override function onInRange()
+		if active
+			let data = GetTriggerUnit().getClass()
+			if data.owner.isAllyOf(this.owner)
+				reset()
+				pData[owner.getId()].escaper.revive(pos)
+		else
+			error("InRange on inactive ReviveCircle")
+			
 		
 
 public function initReviveCircles()
 	for i = 0 to 11
 		if pData[i] != null
 			pData[i].revCircle = new ReviveCircle(pData[i].p)
+			
+		

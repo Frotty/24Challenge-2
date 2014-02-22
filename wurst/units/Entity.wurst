@@ -24,7 +24,7 @@ public abstract class Entity
 		
 		actor = createUnit(owner, id, pos, angle(0))
 		actor.setClass(this)
-		let u = actor
+		inRangeTrig.registerUnitInRangeSource(actor, radius)
 		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
 		
 	abstract function onDeath()
@@ -54,3 +54,4 @@ public function unit.setClass(Entity u)
 	
 init
 	Entity.deathTrig.addAction(() -> GetTriggerUnit().getClass().onDeath())
+	Entity.inRangeTrig.addAction(() -> GetTriggerUnit().getClass().onInRange())
