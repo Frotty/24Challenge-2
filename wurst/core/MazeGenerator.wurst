@@ -23,13 +23,16 @@ public function generateMaze()
 	current = start
 	doPeriodically(.05, (CallbackPeriodic cb) -> begin
 		LinkedList<Turn> turns = getPossibleTurns(current)
-		int index = GetRandomInt(0, turns.getSize() - 1)
-		current = turns.get(index).do(current)
-		if current.ipos.y == HEIGHT-2
-			current.getNeighbour(Side.TOP).changeTType(WALKABLE_ID)
-			AREA_RIGHT_BOT.getTile(current.ipos.x, current.ipos.y+1)..changeTType(WALKABLE_ID)
-			destroy cb
-			expt.start(0.01, function initSmallCreeps)
+		if turns.getSize() == 0
+			current = goBack(goBack(current))
+		else
+			int index = GetRandomInt(0, turns.getSize() - 1)
+			current = turns.get(index).do(current)
+			if current.ipos.y == HEIGHT-2
+				current.getNeighbour(Side.TOP).changeTType(WALKABLE_ID)
+				AREA_RIGHT_BOT.getTile(current.ipos.x, current.ipos.y+1)..changeTType(WALKABLE_ID)
+				destroy cb
+				expt.start(0.01, function initSmallCreeps)
 	end)
 	
 //	for int i = 1 to 50
@@ -37,12 +40,22 @@ public function generateMaze()
 //		int index = GetRandomInt(0, turns.getSize() - 1)
 //		current = turns.get(index).do(current)
 		
+function goBack(Tile t) returns Tile
+	if t.getNeighbour(Side.TOP).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.TOP)
+	else if t.getNeighbour(Side.RIGHT).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.RIGHT)
+	else if t.getNeighbour(Side.LEFT).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.LEFT)
+	else 
+		return t.getNeighbour(Side.BOTTOM)
 	
 function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	var temp = new LinkedList<Turn>()
 	switch tileFace
 		case -180
-			temp.add(goLeft())
+			if highestTile.get(t.ipos.x - 2) < t.ipos.y and not t.ipos.x < 2
+				temp.add(goLeft())
 			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
 				temp.add(goDown())
 		case -90
@@ -66,7 +79,8 @@ function getPossibleTurns(Tile t) returns LinkedList<Turn>
 				if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
 					temp.add(goRight())
 		case 180
-			temp.add(goRight())
+			if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
+				temp.add(goRight())
 			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
 				temp.add(goDown())
 	return temp
