@@ -6,6 +6,7 @@ import LinkedList
 import GameConstants
 import ClosureTimers
 import Area
+import CreepInit
 
 HashMap<int, int> highestTile = new HashMap<int, int>()
 int tileFace = 0
@@ -19,10 +20,14 @@ public function generateMaze()
 	Tile start = a.getRandomBottomTile()
 	start.changeTType(WALKABLE_ID)
 	current = start
-	doPeriodically(1., (CallbackPeriodic cb) -> begin
+	doPeriodically(.05, (CallbackPeriodic cb) -> begin
 		LinkedList<Turn> turns = getPossibleTurns(current)
 		int index = GetRandomInt(0, turns.getSize() - 1)
 		current = turns.get(index).do(current)
+		if current.ipos.y == HEIGHT-2
+			destroy cb
+			print(">>>>>>>>>>destroyed")
+			expt.start(0.01, function initCreeps)
 	end)
 	
 //	for int i = 1 to 50

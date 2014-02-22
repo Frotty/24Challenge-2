@@ -6,15 +6,16 @@ import Tile
 public function getRandomTargetPos(vec2 pos) returns vec2
 	let t = Tile.getFromPos(pos)
 	let tn = t.getRandomWalkableNeighbour()
+	if tn == null
+		return t.pos.polarOffset(angle(GetRandomReal(0,360)), GetRandomReal(1050, 4500))
 	let ang = t.pos.angleTo(tn.pos)
 	let dist = t.pos.distToVec(tn.pos)
-	
 	return t.pos.polarOffset(ang, dist + GetRandomReal(50, 2500))
 
 class Creep extends Entity
 	
 	construct(vec2 pos, vec2 target, int id, real radius)
-		super(pos, DUMMY_PLAYER, id, radius)
+		super(pos, Player(0), id, radius)
 		actor.issuePointOrder("patrol", target)
 		
 	override function onDeath()

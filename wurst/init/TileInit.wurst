@@ -25,11 +25,10 @@ public function initTiles()
 
 	row++
 	if row > HEIGHT-1
-		expt.release()
-		startGame()
-	else
 		expt.setData(AREA_LEFT_BOT castTo int)
 		expt.start(0.01, function generateMaze)
+	else
+		expt.start(0.01, function initTiles)
 		
 			
 		

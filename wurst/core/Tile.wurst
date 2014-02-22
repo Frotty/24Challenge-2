@@ -42,9 +42,10 @@ public class Tile
 				if t != null and t.ttypeId == WALKABLE_ID
 					tiles.add(t)
 		if tiles.getSize() < 1
-			error("no nearby tile walkable")
+			print("no nearby tile walkable")
 		else
 			val = tiles.get(GetRandomInt(0, tiles.getSize()-1))
+			print("found Tile")
 		destroy tiles
 		return val
 	
