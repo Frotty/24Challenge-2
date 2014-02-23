@@ -10,8 +10,9 @@ int iterator = 0
 public function initSmallCreeps()
 	let expt = GetExpiredTimer()
 	let offset = vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128)
-	let offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)-AREA_LEFT_BOT.zero
-	if offset2.length() > 100
+	var offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)
+	if offset2.length() > 1
+		offset2-=AREA_LEFT_BOT.zero
 		AREA_LEFT_BOT.addSmallCreep(offset, offset2)
 		AREA_RIGHT_BOT.addSmallCreep(offset, offset2)
 		
@@ -25,9 +26,11 @@ public function initSmallCreeps()
 public function initBigCreeps()
 	let expt = GetExpiredTimer()
 	let offset = vec2(GetRandomReal(1, WIDTH-2.)*128, GetRandomReal(1, HEIGHT-2.)*128)
-	let offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)-AREA_LEFT_BOT.zero
-	AREA_LEFT_BOT.addBigCreep(offset, offset2)
-	AREA_RIGHT_BOT.addBigCreep(offset, offset2)
+	var offset2 = getRandomTargetPos(AREA_LEFT_BOT.zero+offset)
+	if offset2.length() > 1
+		offset2-=AREA_LEFT_BOT.zero
+		AREA_LEFT_BOT.addBigCreep(offset, offset2)
+		AREA_RIGHT_BOT.addBigCreep(offset, offset2)
 	
 	iterator++
 	if iterator > 15
