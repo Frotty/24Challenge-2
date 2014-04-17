@@ -1,6 +1,6 @@
 package Escaper
-import Entity
-import ReviveCircle
+import initlater Entity
+import initlater ReviveCircle
 import PlayerData
 import Colors
 import Tile

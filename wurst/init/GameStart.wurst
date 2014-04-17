@@ -1,8 +1,8 @@
 package GameStart
-import PlayerData
-import TileInit
-import ReviveCircle
-import Entity
+import initlater PlayerData
+import initlater TileInit
+import initlater ReviveCircle
+import initlater Entity
 
 public function startGame()
 	startEntityLoop()

@@ -1,6 +1,6 @@
 package PlayerData
-import Escaper
-import ReviveCircle
+import initlater Escaper
+import initlater ReviveCircle
 
 public PlayerData array pData
 public int playercount = 0
