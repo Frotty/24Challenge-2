@@ -1,0 +1,38 @@
+package RectWin
+import GameTimer
+import Entity
+import Escaper
+
+real t1 = 0
+real t2 = 0
+
+public int t2p = 0
+public int t1p = 0
+
+function teamone()
+	if GetEnteringUnit().getClass() instanceof Escaper
+		t1 += getElapsedGameTime()
+		t1p--
+		GetEnteringUnit().remove()
+		if t1p < 1
+			print("Team One Finished with: " + t1.toString())
+		else
+			print("Team One plus: " + getElapsedGameTime().toString())
+
+function teamtwo()
+	if GetEnteringUnit().getClass() instanceof Escaper
+		t2 += getElapsedGameTime()
+		t2p--
+		GetEnteringUnit().remove()
+		if t2p < 1
+			print("Team Two Finished with: " + t2.toString())
+		else
+			print("Team Two plus: " + getElapsedGameTime().toString())
+
+public function initWin()
+	let t = CreateTrigger()
+	t.registerRectEnterEventSource(gg_rct_LeftMid)
+	t.addAction(function teamone)
+	let t2 = CreateTrigger()
+	t2.registerRectEnterEventSource(gg_rct_RightMid)
+	t2.addAction(function teamtwo)

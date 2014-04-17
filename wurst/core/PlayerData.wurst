@@ -1,6 +1,8 @@
 package PlayerData
 import initlater Escaper
 import initlater ReviveCircle
+import initlater RectWin
+
 
 public PlayerData array pData
 public int playercount = 0
@@ -15,6 +17,10 @@ public class PlayerData
 		this.p = p
 		id = p.getId()
 		pData[id] = this
+		if id < 6
+			t1p++
+		else
+			t2p++
 		
 	function activateRevive()
 		revCircle.activateAt(escaper.pos)

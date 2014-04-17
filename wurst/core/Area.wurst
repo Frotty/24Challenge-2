@@ -1,0 +1,62 @@
+package Area
+import initlater Tile
+import GameConstants
+import LinkedList
+import initlater Entity
+import initlater Creep
+
+public int startIndex 
+
+public class Area
+	hashtable tileTable = InitHashtable()
+	LinkedList<Entity> entities = new LinkedList<Entity>()
+	vec2 zero
+	vec2 max
+	
+	construct(vec2 zero, vec2 max)
+		this.zero = zero
+		this.max = max
+		
+	function getTile(int x, int y) returns Tile
+		return tileTable.loadInt(x, y) castTo Tile
+		
+	function getTile(key k) returns Tile
+		return tileTable.loadInt(k.x, k.y) castTo Tile
+		
+	function getRandomBottomTile() returns Tile
+		startIndex = (GetRandomInt(4, WIDTH-5))
+		return getTile(startIndex, 0)
+		
+	function isPointInArea(vec2 pos) returns boolean
+		return pos.x > zero.x and pos.x < max.x and pos.y > zero.y and pos.y < max.y
+		
+	function addSmallCreep(vec2 offset1, vec2 offset2)
+		entities.add(new SmallCreep(zero+offset1, zero+offset2))
+			
+	function addBigCreep(vec2 offset1, vec2 offset2)
+		entities.add(new BigCreep(zero+offset1, zero+offset2))
+
+		
+public function getAreaFromPoint(vec2 pos) returns Area
+	if AREA_LEFT_BOT.isPointInArea(pos)
+		return AREA_LEFT_BOT
+	else if AREA_LEFT_TOP.isPointInArea(pos)
+		return AREA_LEFT_TOP
+	else if AREA_RIGHT_BOT.isPointInArea(pos)
+		return AREA_RIGHT_BOT
+	else if AREA_RIGHT_TOP.isPointInArea(pos)
+		return AREA_RIGHT_TOP
+	else
+		error("Point not in any Area")
+		return null
+		
+public Area AREA_LEFT_BOT
+public Area AREA_LEFT_TOP
+public Area AREA_RIGHT_BOT
+public Area AREA_RIGHT_TOP
+
+public function initAreas()
+	AREA_LEFT_BOT = new Area(vec2(-5504.-64.,-6528.-64.), vec2(-128.+64., -1024.+64.))
+	AREA_LEFT_TOP = new Area(vec2(-5504-64.,0-64.), vec2(-128+64., 6016+64.))
+	AREA_RIGHT_BOT = new Area(vec2(640-64.,-6528-64.),vec2(5504+64.,-1024+64.))
+	AREA_RIGHT_TOP = new Area(vec2(640-64.,0-64.), vec2(5504+64.,6016+64.))

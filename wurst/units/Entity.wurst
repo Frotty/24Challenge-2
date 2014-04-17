@@ -15,7 +15,7 @@ public abstract class Entity
 	
 	static trigger deathTrig = CreateTrigger()
 	static trigger rectTrig = CreateTrigger()
-	static trigger inRangeTrig = CreateTrigger()
+	trigger inRangeTrig = CreateTrigger()
 	
 	
 	construct(vec2 pos, player owner, int id, real radius)
@@ -25,6 +25,7 @@ public abstract class Entity
 		actor = createUnit(owner, id, pos, angle(0))
 		actor.setClass(this)
 		inRangeTrig.registerUnitInRangeSource(actor, radius)
+		inRangeTrig.addAction(() -> GetTriggeringTrigger().getSource().getClass().onInRange())
 		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
 		
 	abstract function onDeath()
@@ -35,6 +36,9 @@ public abstract class Entity
 	function setXY(vec2 pos)
 		this.pos = pos
 		actor.setXY(pos)
+		
+	ondestroy
+		remove()
 		
 
 public function startEntityLoop()
@@ -54,4 +58,3 @@ public function unit.setClass(Entity u)
 	
 init
 	Entity.deathTrig.addAction(() -> GetTriggerUnit().getClass().onDeath())
-	Entity.inRangeTrig.addAction(() -> GetTriggerUnit().getClass().onInRange())

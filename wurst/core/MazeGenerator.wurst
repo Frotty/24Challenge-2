@@ -4,31 +4,141 @@ import HashMap
 import Tile
 import LinkedList
 import GameConstants
-
-
-constant int width = 44
+import ClosureTimers
+import Area
+import CreepInit
 
 HashMap<int, int> highestTile = new HashMap<int, int>()
 int tileFace = 0
 
-function generateMaze(Tile a)
-	skip
+Tile current
+
+public function generateMaze()
+	let expt = GetExpiredTimer()
+	let a = expt.getData() castTo Area
+	tileFace = 0
+	Tile start = a.getRandomBottomTile()
+	start.changeTType(WALKABLE_ID)
+	AREA_RIGHT_BOT.getTile(start.ipos.x, start.ipos.y)..changeTType(WALKABLE_ID)
+	current = start
+	doPeriodically(.05, (CallbackPeriodic cb) -> begin
+		LinkedList<Turn> turns = getPossibleTurns(current)
+		if turns.getSize() == 0
+			current = goBack(goBack(current))
+		else
+			int index = GetRandomInt(0, turns.getSize() - 1)
+			current = turns.get(index).do(current)
+			if current.ipos.y == HEIGHT-2
+				current.getNeighbour(Side.TOP).changeTType(WALKABLE_ID)
+				AREA_RIGHT_BOT.getTile(current.ipos.x, current.ipos.y+1)..changeTType(WALKABLE_ID)
+				destroy cb
+				expt.start(0.01, function initSmallCreeps)
+	end)
+	
+//	for int i = 1 to 50
+//		LinkedList<Turn> turns = getPossibleTurns(current)
+//		int index = GetRandomInt(0, turns.getSize() - 1)
+//		current = turns.get(index).do(current)
+		
+function goBack(Tile t) returns Tile
+	if t.getNeighbour(Side.TOP).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.TOP)
+	else if t.getNeighbour(Side.RIGHT).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.RIGHT)
+	else if t.getNeighbour(Side.LEFT).ttypeId == WALKABLE_ID
+		return t.getNeighbour(Side.LEFT)
+	else 
+		return t.getNeighbour(Side.BOTTOM)
 	
 function getPossibleTurns(Tile t) returns LinkedList<Turn>
 	var temp = new LinkedList<Turn>()
-	if tileFace == 0
-		temp.add((Tile start) -> begin 
-			Tile next = start.getNeighbour(Side.TOP) 
-			next.changeTType(WALKABLE_ID)
-			return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
-		end)
-		if not R2I(t.pos.x) > 41
-			temp.add((Tile start) -> begin
-				Tile next = start.getNeighbour(Side.RIGHT)
-				next.changeTType(WALKABLE_ID)
-				return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
-			end)
+	switch tileFace
+		case -180
+			if highestTile.get(t.ipos.x - 2) < t.ipos.y and not t.ipos.x < 2
+				temp.add(goLeft())
+			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
+				temp.add(goDown())
+		case -90
+			temp.add(goUp())
+			if not t.ipos.x < 2
+				if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
+					temp.add(goDown())
+				if highestTile.get(t.ipos.x - 2) < t.ipos.y and not t.ipos.x < 2
+					temp.add(goLeft())
+		case 0
+			temp.add(goUp())
+			if not t.ipos.x > WIDTH - 3 and highestTile.get(t.ipos.x + 2) < t.ipos.y
+				temp.add(goRight())
+			if not t.ipos.x < 2 and highestTile.get(t.ipos.x - 2) < t.ipos.y
+				temp.add(goLeft())
+		case 90
+			temp.add(goUp())
+			if not t.ipos.x > WIDTH - 3
+				if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
+					temp.add(goDown())
+				if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
+					temp.add(goRight())
+		case 180
+			if highestTile.get(t.ipos.x + 2) < t.ipos.y and not t.ipos.x > WIDTH - 3
+				temp.add(goRight())
+			if t.getNeighbour(Side.BOTTOM).getNeighbour(Side.BOTTOM).ttypeId != WALKABLE_ID and t.ipos.y > 2
+				temp.add(goDown())
 	return temp
+	
+function goUp() returns Turn
+	return (Tile start) -> begin
+		if tileFace == 90
+			tileFace = 0
+		else if tileFace == -90
+			tileFace = 0
+		Tile next = start.getNeighbour(Side.TOP) 
+		highestTile.put(next.ipos.x, next.ipos.y)
+		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
+		highestTile.put(next.getNeighbour(Side.TOP).ipos.x, next.getNeighbour(Side.TOP).ipos.y)
+		return next.getNeighbour(Side.TOP)..changeTType(WALKABLE_ID)
+	end
+	
+function goDown() returns Turn
+	return (Tile start) -> begin 
+		if tileFace == 90
+			tileFace = 180
+		else if tileFace == -90
+			tileFace = -180
+		Tile next = start.getNeighbour(Side.BOTTOM) 
+		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.BOTTOM)..changeTType(WALKABLE_ID)
+		
+		return next.getNeighbour(Side.BOTTOM)..changeTType(WALKABLE_ID)
+	end
+	
+function goRight() returns Turn
+	return (Tile start) -> begin
+		if tileFace == 0
+			tileFace = 90
+		else if tileFace == 180
+			tileFace = 90
+		Tile next = start.getNeighbour(Side.RIGHT) 
+		highestTile.put(next.ipos.x, next.ipos.y)
+		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.RIGHT)..changeTType(WALKABLE_ID)
+		highestTile.put(next.getNeighbour(Side.RIGHT).ipos.x, next.getNeighbour(Side.RIGHT).ipos.y)
+		return next.getNeighbour(Side.RIGHT)..changeTType(WALKABLE_ID)
+	end
+		
+function goLeft() returns Turn
+	return (Tile start) -> begin
+		if tileFace == 0
+			tileFace = -90
+		else if tileFace == -180
+			tileFace = -90
+		Tile next = start.getNeighbour(Side.LEFT) 
+		highestTile.put(next.ipos.x, next.ipos.y)
+		next.changeTType(WALKABLE_ID)
+		AREA_RIGHT_BOT.getTile(next.ipos.x, next.ipos.y)..changeTType(WALKABLE_ID).getNeighbour(Side.LEFT)..changeTType(WALKABLE_ID)
+		highestTile.put(next.getNeighbour(Side.LEFT).ipos.x, next.getNeighbour(Side.LEFT).ipos.y)
+		return next.getNeighbour(Side.LEFT)..changeTType(WALKABLE_ID)
+	end
 		
 			
 public abstract class Turn

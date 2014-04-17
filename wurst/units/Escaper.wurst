@@ -10,32 +10,36 @@ constant ESCAPER_RADIUS = 32.
 
 public class Escaper extends Entity
 	Tile currentTile = null
+	boolean alive = true
 	
 	construct(vec2 pos, player owner)
 		super(pos, owner, ESCAPER_ID, ESCAPER_RADIUS)
 		active = true
+		pData[owner.getId()].escaper = this
 		// Unclickable but selectable
 		actor..addAbility('Aloc')..hide()..removeAbility('Aloc')..show()
 		
 	
 	override function onDeath()
+		alive = false
 		pData[this.owner.getId()].activateRevive()
 		
 	override function onUpdate()
-		currentTile = Tile.getFromPos(pos)
-		if currentTile.ttypeId == UNWALKABLE_ID
-			actor.kill()
-		pos = actor.getPos()
+		if alive
+			pos = actor.getPos()
+		currentTile = Tile.getFromPos(pos)	
 		pos += vel
 		actor.setXY(pos)
 		vel *= .92
 		vel.trim(1.)
+		if currentTile != null and currentTile.ttypeId == UNWALKABLE_ID
+			actor.kill()
 		
 	override function onInRange()
 	
 	function revive(vec2 pos, Escaper saviour)
 		actor.revive(pos, false)
 		owner..panCamToTimed(actor, 0.)..select(actor)
-		
+		alive = true
 		printTimed(saviour.owner.getNameColored() + " rescued " + this.owner.getNameColored(), 10.)
 		
